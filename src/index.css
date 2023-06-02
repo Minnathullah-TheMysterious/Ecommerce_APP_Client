@@ -1,13 +1,144 @@
-body {
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400&display=swap");
+
+* {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* font-family: 'Poppins', sans-serif; */
+/* font-family: 'Playfair Display', serif; */
+
+/* ============================
+======  Navbar CSS ========= */
+.navbar {
+  font-family: "Poppins", sans-serif;
+  font-size: 17px;
+  text-transform: uppercase;
+  box-shadow: 0px 8px 6px -6px gray;
+  --webkit-box-shadow: 0 8px 6px -6px gray;
+  border-bottom: solid gray !important;
+}
+
+.nav-link {
+  font-weight: 300 !important;
+}
+
+.active {
+  border-bottom: 2px solid black;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-family: "roboto" sans-serif;
+  letter-spacing: 3px;
+}
+
+
+/* =======================
+======Footer CSS========= */
+.footer {
+  color: white;
+  padding: 25px;
+  background: #000000;
+  background: -webkit-linear-gradient(
+    to right,
+    #434343,
+    #000000
+  ); /*Chrome 10-25, safari 5.1-6*/
+  background: linear-gradient(to right, #434343, #000000);
+}
+
+.footer a {
+  text-decoration: none;
+  color: white;
+  padding: 10px;
+}
+
+.footer a:hover {
+  color: #ffefba;
+  border-bottom: 1px solid #ffefba;
+}
+
+/* ===================================
+============ Page not found CSS ======== */
+.pnf {
+  display: flex;
+  min-height: "65vh";
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px;
+}
+
+.pnf-title {
+  font-size: 120px;
+  font-weight: 700;
+}
+.pnf-heading {
+  font-size: 40px;
+  font-weight: 500;
+}
+
+.pnf-btn {
+  color: black;
+  text-decoration: none;
+  background: white;
+  border: 1.5px solid #000000;
+  padding: 8px;
+  margin-top: 20px;
+}
+
+.pnf-btn:hover {
+  background: rgb(65, 64, 64);
+  color: white;
+}
+
+/* ===============================
+=========contact CSS ============*/
+.contact {
+  padding-top: 100px !important;
+}
+
+.contact-info {
+  padding-top: 30px;
+  /* padding-left: 50px; */
+}
+
+/* ====================================
+===========About CSS ===============*/
+.about {
+  padding-top: 70px;
+  /* margin-left: 175px; */
+}
+
+.about-img img {
+  height: 400px !important;
+  width: 550px;
+}
+
+.about-info {
+  padding-top: 70px;
+}
+
+/* ====================================
+==============Privacy-Policy CSS======= */
+.policy{
+  padding-top: 70px;
+  margin-left: 200px;
+}
+
+.policy-img img{
+  height: 350px;
+  width: 600px !important;
+}
+
+.policy-info{
+  padding-top: 40px;
+}
+
+/* Product Link - Products.js */
+.product-link{
+  text-decoration: none !important;
+  color: black !important;
 }
