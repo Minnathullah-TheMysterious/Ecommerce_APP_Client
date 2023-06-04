@@ -46,12 +46,14 @@ const Products = () => {
                   <div className="card m-2" style={{ width: "18rem" }}>
                     <img
                       src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p._id}`}
-                      className="card-img-top"
+                      className="card-img-top img img-responsive"
                       alt={p.name}
+                      height={'270px'}
                     />
                     <div className="card-body">
                       <h5 className="card-title">{p.name}</h5>
-                      <p className="card-text">{p.description}</p>
+                      <p className="card-text">{p.description.substring(0, 30)}...</p>
+                      <p className="card-text">$ {p.price}</p>
                     </div>
                   </div>
                 </Link>
