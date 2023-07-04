@@ -116,7 +116,7 @@ const Register = () => {
               required
             />
           </div>
-          <button type="submit" className="btn">
+          <button type="submit" className="btn fw-medium">
             REGISTER
           </button>
         </form>

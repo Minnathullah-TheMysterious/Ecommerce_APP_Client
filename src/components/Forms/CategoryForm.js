@@ -5,7 +5,7 @@ const CategoryForm = ({handleSubmit, category, setCategory}) => {
     <>
       <form onSubmit={handleSubmit}>
         <div className="mb-3 w-50">
-          <label htmlFor="catName" className="form-label">
+          <label htmlFor="catName" className="form-label fw-medium fs-5">
             Category Name
           </label>
           <input
@@ -18,8 +18,8 @@ const CategoryForm = ({handleSubmit, category, setCategory}) => {
             }}
           />
         </div>
-        <button type="submit" className="btn btn-primary">
-          Submit
+        <button type="submit" className="btn btn-success w-50 fw-bold">
+          SUBMIT
         </button>
       </form>
     </>

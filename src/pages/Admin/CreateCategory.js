@@ -5,6 +5,7 @@ import { toast } from "react-hot-toast";
 import axios from "axios";
 import CategoryForm from "../../components/Forms/CategoryForm";
 import { Modal } from "antd";
+import CategoryDelete from "./../../components/modals/CategoryDelete";
 
 const CreateCategory = () => {
   const [categories, setCategories] = useState([]);
@@ -12,6 +13,8 @@ const CreateCategory = () => {
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState(null);
   const [updatedName, setUpdatedName] = useState("");
+  const [catId, setCatId] = useState('')
+  const [catName, setCatName] = useState('')
 
   //Handle Form
   const handleSubmit = async (e) => {
@@ -77,23 +80,18 @@ const CreateCategory = () => {
   //Handle delete
   const handleDelete = async (cId) => {
     try {
-      const confirm = window.confirm(
-        "Are You Sure You Want To Delete The Category?"
+      const { data } = await axios.delete(
+        `${process.env.REACT_APP_API}/api/v1/category/delete-category/${cId}`,
+        { name: updatedName }
       );
-      if (confirm) {
-        const { data } = await axios.delete(
-          `${process.env.REACT_APP_API}/api/v1/category/delete-category/${cId}`,
-          { name: updatedName }
-        );
-        if (data.success) {
-          toast.success(`Category Deleted Successfully`);
-          setSelected(null);
-          setVisible(false);
-          setUpdatedName("");
-          getAllCategories();
-        } else {
-          toast.error(data.message);
-        }
+      if (data.success) {
+        toast.success(`Category Deleted Successfully`);
+        setSelected(null);
+        setVisible(false);
+        setUpdatedName("");
+        getAllCategories();
+      } else {
+        toast.error(data.message);
       }
     } catch (error) {
       console.log(error);
@@ -103,13 +101,14 @@ const CreateCategory = () => {
 
   return (
     <Layout title={"Dashboard - Create Category"}>
-      <div className="container-fluid p-3 m-3">
+      <div className="container-fluid" style={{ marginTop: "100px" }}>
         <div className="row">
           <div className="col-md-3">
             <AdminMenu />
           </div>
           <div className="col-md-9">
-            <h1>Manage Category</h1>
+            <h1 className="text-center">Manage Category</h1>
+            <hr />
             <div className="p-3">
               <CategoryForm
                 handleSubmit={handleSubmit}
@@ -120,41 +119,49 @@ const CreateCategory = () => {
             <div className="w-75">
               <table className="table table-striped">
                 <thead>
-                  <tr>
+                  <tr className="text-center">
                     <th scope="col">Name</th>
                     <th scope="col">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {categories?.map((c) => (
-                    <>
-                      <tr>
-                        <td key={c._id}>{c.name}</td>
+                      <tr key={c._id}>
+                        <td className="fw-medium">{c.name}</td>
                         <td>
-                          <button
-                            className="btn btn-primary ms-2"
-                            onClick={() => {
-                              setVisible(true);
-                              setUpdatedName(c.name);
-                              setSelected(c);
+                          <div className="d-flex justify-content-between">
+                            <button
+                              className="btn btn-primary ms-2 w-50 fw-bold"
+                              onClick={() => {
+                                setVisible(true);
+                                setUpdatedName(c.name);
+                                setSelected(c);
+                              }}
+                            >
+                              EDIT
+                            </button>
+                            {/* Button trigger modal */}
+                            <button
+                            onClick={()=>{
+                              setCatId(c._id)
+                              setCatName(c.name)
                             }}
-                          >
-                            Edit
-                          </button>
-                          <button
-                            className="btn btn-danger ms-2"
-                            onClick={() => handleDelete(c._id)}
-                          >
-                            Delete
-                          </button>
+                              type="button"
+                              className="btn btn-danger fw-bold w-50 ms-2"
+                              data-bs-toggle="modal"
+                              data-bs-target="#exampleModal"
+                            >
+                              DELETE
+                            </button>
+                          </div>
                         </td>
                       </tr>
-                    </>
                   ))}
                 </tbody>
               </table>
             </div>
           </div>
+          <CategoryDelete deleteHandler={handleDelete} cId={catId} cName={catName}/>
           <Modal
             onCancel={() => setVisible(false)}
             footer={null}

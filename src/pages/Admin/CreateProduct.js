@@ -66,13 +66,14 @@ const CreateProduct = () => {
 
   return (
     <Layout title={"Dashboard - Create Product"}>
-      <div className="container-fluid p-3 m-3">
+      <div className="container-fluid" style={{ marginTop: "100px" }}>
         <div className="row">
           <div className="col-md-3">
             <AdminMenu />
           </div>
           <div className="col-md-9">
-            <h1>Create Product</h1>
+            <h1 className="text-center">Create Product</h1>
+            <hr />
             <div className="m-1 w-75">
               <Select
                 className="form-select mb-3"
@@ -156,15 +157,17 @@ const CreateProduct = () => {
                   className="form-select mb-3"
                   showSearch
                   size="large"
-                  onChange={(value) => {setShipping(value)}}
+                  onChange={(value) => {
+                    setShipping(value);
+                  }}
                 >
-                  <Option value={false}>No</Option>
+                  <Option value= {false}>No</Option>
                   <Option value={true}>Yes</Option>
                 </Select>
               </div>
               <div className="mb-3">
                 <button
-                  className="btn btn-primary"
+                  className="btn btn-primary w-100 fw-bold"
                   onClick={handleCreateProduct}
                 >
                   CREATE PRODUCT

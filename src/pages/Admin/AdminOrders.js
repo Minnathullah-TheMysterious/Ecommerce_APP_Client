@@ -1,19 +1,27 @@
+import AdminMenu from "../../components/Layouts/AdminMenu.js";
+import Layout from "../../components/Layouts/Layout.js";
 import React, { useEffect, useState } from "react";
-import Layout from "../../components/Layouts/Layout";
-import UserMenu from "../../components/Layouts/UserMenu";
-import axios from "axios";
-import { useAuth } from "../../context/Auth";
 import moment from "moment";
+import { useAuth } from "../../context/Auth";
+import axios from "axios";
+import { Select } from "antd";
 
-const Orders = () => {
-  const [orders, setOrders] = useState([]);
+const AdminOrders = () => {
   const [auth] = useAuth();
+  const [orders, setOrders] = useState([]);
+  const [status] = useState([
+    "Not Process",
+    "Processing",
+    "Shipped",
+    "Delivered",
+    "Cancel",
+  ]);
 
-  //Get Orders
-  const getOrders = async () => {
+  //Get All Orders
+  const getAllOrders = async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_API}/api/v1/auth/orders`
+        `${process.env.REACT_APP_API}/api/v1/auth/all-orders`
       );
       setOrders(data);
     } catch (error) {
@@ -21,24 +29,37 @@ const Orders = () => {
     }
   };
   useEffect(() => {
-    if (auth?.token) getOrders();
+    if (auth?.token) getAllOrders();
   }, [auth?.token]);
 
+  //handle status
+  const handleChangeStatus = async (orderId, value) => {
+    try {
+      await axios.put(
+        `${process.env.REACT_APP_API}/api/v1/auth/order-status/${orderId}`,
+        { status: value }
+      );
+      getAllOrders();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <Layout title={"Your Orders"}>
+    <Layout title={"All Orders Data"}>
       <div className="container-fluid" style={{ marginTop: "100px" }}>
-        <div className="row">
+        <div className="row mt-4">
           <div className="col-md-3">
-            <UserMenu />
+            <AdminMenu />
           </div>
           <div className="col-md-9">
-            <h1 className="text-center">Your Orders</h1>
+            <h1 className="text-center">Manage All Orders</h1>
             <hr />
             {
               orders.map((o, i) => {
                 return (
                   <div className="border shadow mt-2" key={o._id}>
-                    <table className="table">
+                    <table className="table ">
                       <thead className="table-dark">
                         <tr>
                           <th scope="col">#</th>
@@ -52,7 +73,21 @@ const Orders = () => {
                       <tbody className="table-group-divider">
                         <tr>
                           <td>{i + 1}</td>
-                          <td>{o?.status}</td>
+                          <td>
+                            <Select
+                              bordered={false}
+                              onChange={(value) =>
+                                handleChangeStatus(o?._id, value)
+                              }
+                              defaultValue={o?.status}
+                            >
+                              {status?.map((s, i) => (
+                                <Select.Option key={i} value={s}>
+                                  {s}
+                                </Select.Option>
+                              ))}
+                            </Select>
+                          </td>
                           <td>{o?.buyer?.name}</td>
                           <td>{moment(o?.createdAt).fromNow()}</td>
                           <td>{o?.payment?.success ? "Success" : "Failed"}</td>
@@ -72,7 +107,9 @@ const Orders = () => {
                             />
                           </div>
                           <div className="col-md-7 text-center p-4">
-                            <p className="fw-bold">{p.name.toUpperCase()}</p>
+                            <p style={{ fontWeight: "bold" }}>
+                              {p.name.toUpperCase()}
+                            </p>
                             <p className="text-success fw-medium">
                               Price :{" "}
                               {p.price.toLocaleString("en-US", {
@@ -80,7 +117,9 @@ const Orders = () => {
                                 currency: "USD",
                               })}
                             </p>
-                            <p>{p.description.substring(0, 150)}</p>
+                            <p className="text-info">
+                              {p.description.substring(0, 130)}...
+                            </p>
                           </div>
                         </div>
                       ))}
@@ -96,4 +135,4 @@ const Orders = () => {
   );
 };
 
-export default Orders;
+export default AdminOrders;

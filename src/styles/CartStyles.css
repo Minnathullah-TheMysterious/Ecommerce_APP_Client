@@ -1,0 +1,48 @@
+.cart-page {
+  margin-top: 64px;
+}
+
+.cart-page h1 {
+  padding: 15px !important;
+  font-family: "roboto", sans-serif;
+  font-weight: normal;
+  background-color: rgba(54, 56, 184, 0.705) !important;
+  color: white;
+}
+
+.cart-page h1 > p {
+  font-size: 20px;
+  margin-top: 10px;
+}
+
+.cart-page {
+  margin-top: 64px;
+}
+
+.cart-page .cart-remove-btn button{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.cart-page .card-price{
+  color: green;
+  font-weight: bold;
+}
+
+.cart-page .card-name{
+  color: black;
+  font-weight: bold;
+}
+
+.cart-page .card-description{
+  color: gray;
+}
+
+.payment-btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}

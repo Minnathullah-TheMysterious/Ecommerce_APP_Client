@@ -6,6 +6,10 @@
   box-sizing: border-box;
 }
 
+body{
+  background-color: rgb(237, 252, 252);
+}
+
 /* font-family: 'Poppins', sans-serif; */
 /* font-family: 'Playfair Display', serif; */
 
@@ -18,6 +22,11 @@
   box-shadow: 0px 8px 6px -6px gray;
   --webkit-box-shadow: 0 8px 6px -6px gray;
   border-bottom: solid gray !important;
+  overflow:visible;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
 }
 
 .nav-link {
@@ -34,6 +43,17 @@
   letter-spacing: 3px;
 }
 
+.navbar .cart{
+  font-size: 25px;
+}
+
+.nav-search button{
+  border: none;
+}
+
+.nav-search .search-area{
+  border: none;
+}
 
 /* =======================
 ======Footer CSS========= */
@@ -123,22 +143,22 @@
 
 /* ====================================
 ==============Privacy-Policy CSS======= */
-.policy{
+.policy {
   padding-top: 70px;
   margin-left: 200px;
 }
 
-.policy-img img{
+.policy-img img {
   height: 350px;
   width: 600px !important;
 }
 
-.policy-info{
+.policy-info {
   padding-top: 40px;
 }
 
 /* Product Link - Products.js */
-.product-link{
+.product-link {
   text-decoration: none !important;
   color: black !important;
 }

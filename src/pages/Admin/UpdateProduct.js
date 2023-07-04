@@ -4,12 +4,14 @@ import AdminMenu from "../../components/Layouts/AdminMenu";
 import { Select } from "antd";
 import { toast } from "react-hot-toast";
 import axios from "axios";
-import { Option } from "antd/es/mentions";
 import { useParams, useNavigate } from "react-router-dom";
+import ProductDelete from "../../components/modals/ProductDelete";
 
 const UpdateProduct = () => {
   const params = useParams();
   const navigate = useNavigate();
+
+  //states
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState("");
   const [photo, setPhoto] = useState("");
@@ -27,7 +29,7 @@ const UpdateProduct = () => {
         `${process.env.REACT_APP_API}/api/v1/category/get-category`
       );
       if (data?.success) {
-        setCategories(data?.category); //category is from categoryController()
+        setCategories(data?.category); 
       }
     } catch (error) {
       console.log(error);
@@ -41,21 +43,23 @@ const UpdateProduct = () => {
       const { data } = await axios.get(
         `${process.env.REACT_APP_API}/api/v1/product/get-product/${params.slug}`
       );
-      setName(data.product.name);
-      setDescription(data.product.description);
-      setPrice(data.product.price);
-      setQuantity(data.product.quantity);
-      setCategory(data.product.category._id);
-      setShipping(data.product.shipping);
-      setId(data.product._id);
+      setName(data?.product?.name);
+      setDescription(data?.product?.description);
+      setPrice(data?.product?.price);
+      setQuantity(data?.product?.quantity);
+      setCategory(data?.product?.category?._id);
+      setShipping(data?.product?.shipping);
+      setId(data?.product?._id);
+      // console.log(JSON.stringify(data?.product, null, 4))
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    getAllCategories();
     getSingleProduct();
+    getAllCategories();
+    // eslint-disable-next-line
   }, []);
 
   //Update product function
@@ -86,33 +90,16 @@ const UpdateProduct = () => {
     }
   };
 
-  //Delete Product function
-  const handleDeleteProduct = async () => {
-    try {
-      const answer = window.confirm(
-        "Are You Sure You Want To Delete The Product?"
-      );
-      if (!answer) return;
-      const { data } = await axios.delete(
-        `${process.env.REACT_APP_API}/api/v1/product/delete-product/${id}`
-      );
-      toast.success("Prodeuct Deleted Successfully");
-      navigate("/dashboard/admin/products");
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong while deleting the product");
-    }
-  };
-
   return (
     <Layout title={"Dashboard - Update Product"}>
-      <div className="container-fluid m-3 p-3">
+      <div className="container-fluid" style={{ marginTop: "100px" }}>
         <div className="row">
           <div className="col-md-3">
             <AdminMenu />
           </div>
           <div className="col-md-9 ">
-            <h1 className="mb-3">Update Product</h1>
+            <h1 className="mb-3 text-center">Update Product</h1>
+            <hr />
             <div className=" w-75">
               <Select
                 className="form-select mb-3"
@@ -126,9 +113,9 @@ const UpdateProduct = () => {
                 }}
               >
                 {categories.map((c) => (
-                  <Option key={c._id} value={c._id}>
+                  <Select.Option key={c._id} value={c._id}>
                     {c.name}
-                  </Option>
+                  </Select.Option>
                 ))}
               </Select>
               <div className="mb-3">
@@ -154,6 +141,7 @@ const UpdateProduct = () => {
                   </div>
                 ) : (
                   <div className="text-center">
+                    {/* {console.log(id)} */}
                     <img
                       src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${id}`}
                       alt={photo?.name}
@@ -210,27 +198,18 @@ const UpdateProduct = () => {
                     setShipping(value);
                   }}
                 >
-                  <Option value={true}>Yes</Option>
-                  <Option value={false}>Yes</Option>
+                  <Select.Option value={true}>Yes</Select.Option>
+                  <Select.Option value={false}>No</Select.Option>
                 </Select>
               </div>
-              <div className="d-flex">
-                <div className="mb-3">
-                  <button
-                    className="btn btn-primary"
-                    onClick={handleUpdateProduct}
-                  >
-                    UPDATE PRODUCT
-                  </button>
-                </div>
-                <div className="mb-3 ms-auto">
-                  <button
-                    className="btn btn-danger"
-                    onClick={handleDeleteProduct}
-                  >
-                    DELETE PRODUCT
-                  </button>
-                </div>
+              <div className="d-flex justify-content-between">
+                <button
+                  className="btn btn-primary fw-bold mb-3"
+                  onClick={handleUpdateProduct}
+                >
+                  UPDATE PRODUCT
+                </button>
+                <ProductDelete pId={id} productName={name} />
               </div>
             </div>
           </div>
