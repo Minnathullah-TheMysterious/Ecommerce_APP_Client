@@ -50,7 +50,6 @@ const UpdateProduct = () => {
       setCategory(data?.product?.category?._id);
       setShipping(data?.product?.shipping);
       setId(data?.product?._id);
-      // console.log(JSON.stringify(data?.product, null, 4))
     } catch (error) {
       console.log(error);
     }
@@ -141,7 +140,6 @@ const UpdateProduct = () => {
                   </div>
                 ) : (
                   <div className="text-center">
-                    {/* {console.log(id)} */}
                     <img
                       src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${id}`}
                       alt={photo?.name}
