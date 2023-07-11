@@ -16,27 +16,31 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
+      const { data } = await axios.post(
         `${process.env.REACT_APP_API}/api/v1/auth/login`,
         { email, password }
       );
-      if (res.data.success) {
-        toast.success(res.data.message);
+  
+      const { success, message, user, token } = data;
+  
+      if (success) {
+        toast.success(message);
         setAuth({
           ...auth,
-          user: res.data.user,
-          token: res.data.token,
+          user: user,
+          token: token,
         });
-        localStorage.setItem("auth", JSON.stringify(res.data));
+  
+        localStorage.setItem("auth", JSON.stringify(data));
         navigate(location.state || "/");
-      } else {
-        toast.error(res.data.message);
+      } else{
+        toast.error(message)
       }
     } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong");
+      toast.error("Incorrect Email or Password");
     }
   };
+  
 
   return (
     <Layout title={"Login - Ecommerce App"}>
@@ -77,7 +81,13 @@ const Login = () => {
           <button type="submit" className="btn mb-3 fw-medium">
             LOGIN
           </button>
-          <button type="button" className="btn mb-3 fw-medium" onClick={() => {navigate('/forgot-password')}}>
+          <button
+            type="button"
+            className="btn mb-3 fw-medium"
+            onClick={() => {
+              navigate("/forgot-password");
+            }}
+          >
             FORGOT PASSWORD
           </button>
         </form>

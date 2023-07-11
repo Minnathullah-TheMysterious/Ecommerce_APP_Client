@@ -10,16 +10,14 @@ const ProductDetails = () => {
   const params = useParams();
   const [product, setProduct] = useState({});
   const [relatedProducts, setRelatedProducts] = useState([]);
-
-  //context api
   const [cart, setCart] = useCart();
 
-  //Initialize Product Details
   useEffect(() => {
-    if (params?.slug) getSingleProduct();
-  }, [params.slug]);
+    if (params?.slug) {
+      getSingleProduct();
+    }
+  }, [params?.slug]);
 
-  //Get product
   const getSingleProduct = async () => {
     try {
       const { data } = await axios.get(
@@ -32,7 +30,6 @@ const ProductDetails = () => {
     }
   };
 
-  //Similar Products
   const getSimilarProducts = async (pid, cid) => {
     try {
       const { data } = await axios.get(
@@ -43,8 +40,14 @@ const ProductDetails = () => {
       console.log(error);
     }
   };
+
+  const handleAddToCart = (item) => {
+    setCart([...cart, item]);
+    localStorage.setItem("cart", JSON.stringify([...cart, item]));
+  };
+
   return (
-    <Layout title={"Product Details"}>
+    <Layout title="Product Details">
       <div className="container product-details">
         <div className="row mt-4">
           <div className="col-md-6">
@@ -58,32 +61,26 @@ const ProductDetails = () => {
           <div className="col-md-6 product-details-info">
             <h1 className="text-center">PRODUCT DETAILS</h1>
             <div className="m-4">
-              <h6>Name : {product?.name}</h6>
-              <h6>Description : {product?.description}</h6>
+              <h6>Name: {product?.name}</h6>
+              <h6>Description: {product?.description}</h6>
               <h6>
-                Price :{" "}
+                Price:{" "}
                 {product?.price?.toLocaleString("en-US", {
                   style: "currency",
                   currency: "USD",
                 })}
               </h6>
-              <h6>Avialable Quantity : {product?.quantity}</h6>
-              <h6>Category : {product?.category?.name}</h6>
+              <h6>Available Quantity: {product?.quantity}</h6>
+              <h6>Category: {product?.category?.name}</h6>
               <h6>
-                Shipping :
+                Shipping:{" "}
                 {product.shipping === true
-                  ? " Available"
-                  : " Sorry! Not available at your location"}
+                  ? "Available"
+                  : "Not available at your location"}
               </h6>
               <button
-                className="btn btn-primary "
-                onClick={() => {
-                  setCart([...cart, product]);
-                  localStorage.setItem(
-                    "cart",
-                    JSON.stringify([...cart, product])
-                  );
-                }}
+                className="btn btn-primary"
+                onClick={() => handleAddToCart(product)}
               >
                 Add To Cart
               </button>
@@ -118,21 +115,13 @@ const ProductDetails = () => {
                   </p>
                   <button
                     className="btn btn-primary m-1"
-                    onClick={(e) => {
-                      navigate(`/product-details/${p.slug}`);
-                    }}
+                    onClick={() => navigate(`/product-details/${p.slug}`)}
                   >
                     More Details
                   </button>
                   <button
                     className="btn btn-secondary m-1"
-                    onClick={() => {
-                      setCart([...cart, p]);
-                      localStorage.setItem(
-                        "cart",
-                        JSON.stringify([...cart, p])
-                      );
-                    }}
+                    onClick={() => handleAddToCart(p)}
                   >
                     Add To Cart
                   </button>

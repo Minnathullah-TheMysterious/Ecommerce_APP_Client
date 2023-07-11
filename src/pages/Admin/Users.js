@@ -44,8 +44,8 @@ const Users = () => {
     }
   };
   useEffect(() => {
-    if (users) getAllUsers();
-  }, [users]);
+    getAllUsers();
+  }, []);
 
   //DELETE USER BY ID || DELETE
   const handleDeleteUser = async (uId) => {

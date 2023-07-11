@@ -11,7 +11,7 @@ const Contact = () => {
         <div className="row">
           <div className="col-md-6">
             <img
-              src="/images/contact-us.webp"
+              src="/images/contact-us.png"
               alt="Contact Us"
               style={{ width: "100%" }}
             />

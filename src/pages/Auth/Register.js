@@ -18,19 +18,21 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
+      const response = await axios.post(
         `${process.env.REACT_APP_API}/api/v1/auth/register`,
         { name, email, password, phone, address, answer }
       );
-      if (res.data.success) {
-        toast.success(res.data.message);
+
+      const {success, message} = response.data
+
+      if (success) {
+        toast.success(message);
         navigate("/login");
       } else {
-        toast.error(res.data.message);
+        toast.error(message);
       }
     } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong");
+      toast.error("Something Went Wrong While Registering");
     }
   };
   return (
