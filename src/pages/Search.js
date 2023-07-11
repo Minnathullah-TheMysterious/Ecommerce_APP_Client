@@ -6,7 +6,7 @@ import { useCart } from "../context/Cart";
 import { toast } from "react-hot-toast";
 
 const Search = () => {
-  const [values, setValues] = useSearch();
+  const [values] = useSearch();
   const navigate = useNavigate();
 
   //context api

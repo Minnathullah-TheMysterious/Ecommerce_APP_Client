@@ -44,24 +44,26 @@ const Products = () => {
   }, []);
 
   //Load More
-  const loadMore = async () => {
-    try {
-      setLoading(true);
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_API}/api/v1/product/product-list/${page}`
-      );
-      setLoading(false);
-      setProducts([...products, ...data?.products]);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-    }
-  };
   useEffect(() => {
-    if (page === 1) return;
-    loadMore();
+    const loadMore = async () => {
+      try {
+        setLoading(true);
+        const { data } = await axios.get(
+          `${process.env.REACT_APP_API}/api/v1/product/product-list/${page}`
+        );
+        setLoading(false);
+        setProducts(prevProducts => [...prevProducts, ...data?.products]);
+      } catch (error) {
+        setLoading(false);
+        console.log(error);
+      }
+    };
+  
+    if (page !== 1) {
+      loadMore();
+    }
   }, [page]);
-
+  
   return (
     <Layout title="Dashboard - Products">
       <div className="container-fluid" style={{ marginTop: "100px" }}>
@@ -73,10 +75,10 @@ const Products = () => {
             <h1 className="text-center">All Products</h1>
             <hr />
             <div className="d-flex flex-wrap">
-              {products?.map((p) => (
+              {products?.map((p, i) => (
                 <Link
                   to={`/dashboard/admin/update-product/${p.slug}`}
-                  key={p._id}
+                  key={`${p._id}-${i}`}
                   className="product-link"
                 >
                   <div className="card m-2" style={{ width: "16rem" }}>

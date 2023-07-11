@@ -13,22 +13,22 @@ const ProductDetails = () => {
   const [cart, setCart] = useCart();
 
   useEffect(() => {
+    const getSingleProduct = async () => {
+      try {
+        const { data } = await axios.get(
+          `${process.env.REACT_APP_API}/api/v1/product/get-product/${params.slug}`
+        );
+        setProduct(data?.product);
+        getSimilarProducts(data?.product?._id, data?.product?.category?._id);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     if (params?.slug) {
       getSingleProduct();
     }
   }, [params?.slug]);
-
-  const getSingleProduct = async () => {
-    try {
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_API}/api/v1/product/get-product/${params.slug}`
-      );
-      setProduct(data?.product);
-      getSimilarProducts(data?.product?._id, data?.product?.category?._id);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const getSimilarProducts = async (pid, cid) => {
     try {

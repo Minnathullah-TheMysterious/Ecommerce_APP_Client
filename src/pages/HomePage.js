@@ -6,6 +6,7 @@ import { Prices } from "../components/Prices";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { useCart } from "../context/Cart";
+import { useRef } from "react";
 import "../styles/HomePage.css";
 
 const HomePage = () => {
@@ -20,22 +21,31 @@ const HomePage = () => {
   const [page, setPage] = useState(1);
 
   //Get Products per page
-  const getAllProducts = async () => {
-    try {
-      setLoading(true);
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_API}/api/v1/product/product-list/${page}`
-      );
-      setLoading(false);
-      setProducts(data?.products);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-    }
-  };
+  const pageRef = useRef(page);
+
   useEffect(() => {
-    if (!checked.length || !radio.length) getAllProducts();
+    const getAllProducts = async () => {
+      try {
+        setLoading(true);
+        const { data } = await axios.get(
+          `${process.env.REACT_APP_API}/api/v1/product/product-list/${pageRef.current}`
+        );
+        setLoading(false);
+        setProducts(data?.products);
+      } catch (error) {
+        setLoading(false);
+        console.log(error);
+      }
+    };
+
+    if (!checked.length || !radio.length) {
+      getAllProducts();
+    }
   }, [checked.length, radio.length]);
+
+  useEffect(() => {
+    pageRef.current = page;
+  }, [page]);
 
   //Get All Categories
   const getAllCategory = async () => {
@@ -49,40 +59,46 @@ const HomePage = () => {
     }
   };
 
-  //Get Total Count
-  const getTotalCount = async () => {
-    try {
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_API}/api/v1/product/product-count`
-      );
-      setTotal(data?.total);
-    } catch (error) {
-      console.log(error);
-    }
-  };
   useEffect(() => {
     getAllCategory();
-    getTotalCount();
   }, []);
 
-  //Load More
-  const loadMore = async () => {
-    try {
-      setLoading(true);
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_API}/api/v1/product/product-list/${page}`
-      );
-      setLoading(false);
-      setProducts([...products, ...data?.products]);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-    }
-  };
+  //Get Total Count
   useEffect(() => {
-    if (page === 1) return;
-    loadMore();
-  }, [page]);
+    const getTotalCount = async () => {
+      try {
+        const { data } = await axios.get(
+          `${process.env.REACT_APP_API}/api/v1/product/product-count`
+        );
+        setTotal(data?.total);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getTotalCount();
+  }, [total]);
+
+  //Load More
+  useEffect(() => {
+    const loadMore = async () => {
+      try {
+        setLoading(true);
+        const { data } = await axios.get(
+          `${process.env.REACT_APP_API}/api/v1/product/product-list/${page}`
+        );
+        setProducts((prevProducts) => [...prevProducts, ...data?.products]);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (page !== 1) {
+      loadMore();
+    }
+  }, [page, setProducts]);
 
   //Handle Category Filter
   const handleFilter = (value, id) => {
@@ -96,19 +112,23 @@ const HomePage = () => {
   };
 
   //Get Filtered Product
-  const filterProduct = async () => {
-    try {
-      const { data } = await axios.post(
-        `${process.env.REACT_APP_API}/api/v1/product/filter-product`,
-        { checked, radio }
-      );
-      setProducts(data?.products);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
   useEffect(() => {
-    if (checked.length || radio.length) filterProduct();
+    const filterProduct = async () => {
+      try {
+        const { data } = await axios.post(
+          `${process.env.REACT_APP_API}/api/v1/product/filter-product`,
+          { checked, radio }
+        );
+        setProducts(data?.products);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (checked.length || radio.length) {
+      filterProduct();
+    }
   }, [checked, radio]);
 
   return (
@@ -126,10 +146,10 @@ const HomePage = () => {
             {/*Filter by category  */}
             <h4 className="text-center">Filter By Category</h4>
             <div className="d-flex flex-column">
-              {categories?.map((c) => (
+              {categories?.map((c, i) => (
                 <Checkbox
                   className="m-1"
-                  key={c._id}
+                  key={`${c._id}-${i}`}
                   onChange={(e) => handleFilter(e.target.checked, c._id)}
                 >
                   {c.name}
@@ -140,8 +160,8 @@ const HomePage = () => {
             <h4 className="text-center mt-2">Filter By Price</h4>
             <div className="d-flex flex-column">
               <Radio.Group onChange={(e) => setRadio(e.target.value)}>
-                {Prices.map((p) => (
-                  <div key={p._id}>
+                {Prices.map((p, i) => (
+                  <div key={`${p._id}-${i}`}>
                     <Radio className="m-1" value={p.array}>
                       {p.name}
                     </Radio>
@@ -162,11 +182,11 @@ const HomePage = () => {
             <h1 className="text-center">All Products</h1>
             <hr />
             <div className="d-flex flex-wrap">
-              {products?.map((p) => (
+              {products?.map((p, i) => (
                 <div
                   className="card m-2"
                   style={{ width: "18rem" }}
-                  key={p._id}
+                  key={`${p._id}-${i}`}
                 >
                   <img
                     src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p._id}`}

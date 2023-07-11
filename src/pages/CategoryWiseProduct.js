@@ -14,19 +14,22 @@ const CategoryWiseProduct = () => {
   //context api
   const [cart, setCart] = useCart();
 
-  const getProductsByCategory = async () => {
-    try {
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_API}/api/v1/product/product-category/${params.slug}`
-      );
-      setProducts(data?.products);
-      setCategory(data?.category);
-    } catch (error) {
-      console.log(error);
-    }
-  };
   useEffect(() => {
-    if (params?.slug) getProductsByCategory();
+    const getProductsByCategory = async () => {
+      try {
+        const { data } = await axios.get(
+          `${process.env.REACT_APP_API}/api/v1/product/product-category/${params.slug}`
+        );
+        setProducts(data?.products);
+        setCategory(data?.category);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (params?.slug) {
+      getProductsByCategory();
+    }
   }, [params?.slug]);
 
   return (
