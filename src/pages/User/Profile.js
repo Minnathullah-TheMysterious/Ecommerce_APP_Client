@@ -30,7 +30,7 @@ const Profile = () => {
     e.preventDefault();
     try {
       const { data } = await axios.put(
-        `${process.env.REACT_APP_API}/api/v1/auth/update-profile`,
+        `/api/v1/auth/update-profile`,
         { name, email, phone, address, password }
       );
       if(data?.error){
@@ -44,7 +44,7 @@ const Profile = () => {
         toast.success('Profile Updated Successfully')
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Something went wrong while updating the profile");
     }
   };

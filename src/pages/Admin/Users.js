@@ -33,13 +33,13 @@ const Users = () => {
     try {
       setLoading(true);
       const { data } = await axios.get(
-        `${process.env.REACT_APP_API}/api/v1/auth/all-users`
+        `/api/v1/auth/all-users`
       );
       setLoading(false);
       setUsers(data?.users);
     } catch (error) {
       setLoading(false);
-      console.log(error);
+      console.error(error);
       toast.error("Error in getting All The Users");
     }
   };
@@ -51,7 +51,7 @@ const Users = () => {
   const handleDeleteUser = async (uId) => {
     try {
       const { data } = await axios.delete(
-        `${process.env.REACT_APP_API}/api/v1/auth/delete-user/${uId}`
+        `/api/v1/auth/delete-user/${uId}`
       );
       if (data?.success) {
         toast.success("User Deleted Successfully");
@@ -60,7 +60,7 @@ const Users = () => {
         toast.error(data?.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Something went wrong while deleting the User");
     }
   };
@@ -69,11 +69,11 @@ const Users = () => {
   const usersCount = async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_API}/api/v1/auth/users-count`
+        `/api/v1/auth/users-count`
       );
       setUserCount(data?.totalUserCount);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
   useEffect(() => {
@@ -85,13 +85,13 @@ const Users = () => {
     try {
       setLoading(true);
       const { data } = await axios.get(
-        `${process.env.REACT_APP_API}/api/v1/auth/users-list/${page}`
+        `/api/v1/auth/users-list/${page}`
       );
       setLoading(false);
       setUsers([...users, ...data?.usersListPerPage]);
     } catch (error) {
       setLoading(false);
-      console.log(error);
+      console.error(error);
     }
   };
 

@@ -15,11 +15,11 @@ const Products = () => {
   const getAllProducts = async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_API}/api/v1/product/get-product`
+        `/api/v1/product/get-product`
       );
       setProducts(data?.product); 
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Something went wrong while getting the products");
     }
   };
@@ -32,11 +32,11 @@ const Products = () => {
   const getTotalCount = async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_API}/api/v1/product/product-count`
+        `/api/v1/product/product-count`
       );
       setTotal(data?.total);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
   useEffect(() => {
@@ -49,13 +49,13 @@ const Products = () => {
       try {
         setLoading(true);
         const { data } = await axios.get(
-          `${process.env.REACT_APP_API}/api/v1/product/product-list/${page}`
+          `/api/v1/product/product-list/${page}`
         );
         setLoading(false);
         setProducts(prevProducts => [...prevProducts, ...data?.products]);
       } catch (error) {
         setLoading(false);
-        console.log(error);
+        console.error(error);
       }
     };
   
@@ -83,7 +83,7 @@ const Products = () => {
                 >
                   <div className="card m-2" style={{ width: "16rem" }}>
                     <img
-                      src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p._id}`}
+                      src={`/api/v1/product/product-photo/${p._id}`}
                       className="card-img-top img img-responsive"
                       alt={p.name}
                       height={"270px"}

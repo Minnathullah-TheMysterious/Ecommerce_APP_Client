@@ -28,13 +28,13 @@ const HomePage = () => {
       try {
         setLoading(true);
         const { data } = await axios.get(
-          `${process.env.REACT_APP_API}/api/v1/product/product-list/${pageRef.current}`
+          `/api/v1/product/product-list/${pageRef.current}`
         );
         setLoading(false);
         setProducts(data?.products);
       } catch (error) {
         setLoading(false);
-        console.log(error);
+        console.error(error);
       }
     };
 
@@ -51,11 +51,11 @@ const HomePage = () => {
   const getAllCategory = async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_API}/api/v1/category/get-category`
+        `/api/v1/category/get-category`
       );
       setCategories(data?.category);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -68,11 +68,11 @@ const HomePage = () => {
     const getTotalCount = async () => {
       try {
         const { data } = await axios.get(
-          `${process.env.REACT_APP_API}/api/v1/product/product-count`
+          `/api/v1/product/product-count`
         );
         setTotal(data?.total);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
 
@@ -85,11 +85,11 @@ const HomePage = () => {
       try {
         setLoading(true);
         const { data } = await axios.get(
-          `${process.env.REACT_APP_API}/api/v1/product/product-list/${page}`
+          `/api/v1/product/product-list/${page}`
         );
         setProducts((prevProducts) => [...prevProducts, ...data?.products]);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       } finally {
         setLoading(false);
       }
@@ -117,12 +117,12 @@ const HomePage = () => {
     const filterProduct = async () => {
       try {
         const { data } = await axios.post(
-          `${process.env.REACT_APP_API}/api/v1/product/filter-product`,
+          `/api/v1/product/filter-product`,
           { checked, radio }
         );
         setProducts(data?.products);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
 
@@ -189,7 +189,7 @@ const HomePage = () => {
                   key={`${p._id}-${i}`}
                 >
                   <img
-                    src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p._id}`}
+                    src={`/api/v1/product/product-photo/${p._id}`}
                     className="card-img-top img img-responsive"
                     alt="Product"
                     height={"220px"}

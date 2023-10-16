@@ -16,7 +16,7 @@ const SearchedUser = () => {
   const handleDeleteUser = async (uId) => {
     try {
       const { data } = await axios.delete(
-        `${process.env.REACT_APP_API}/api/v1/auth/delete-user/${uId}`
+        `/api/v1/auth/delete-user/${uId}`
       );
       if (data?.success) {
         toast.success("User Deleted Successfully");
@@ -25,7 +25,7 @@ const SearchedUser = () => {
         toast.error(data?.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Something went wrong while deleting the User");
     }
   };

@@ -11,12 +11,12 @@ const ProductDelete = ({ pId, productName }) => {
   const handleDeleteProduct = async () => {
     try {
       await axios.delete(
-        `${process.env.REACT_APP_API}/api/v1/product/delete-product/${pId}`
+        `/api/v1/product/delete-product/${pId}`
       );
       toast.success("Prodeuct Deleted Successfully");
       navigate("/dashboard/admin/products");
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Something went wrong while deleting the product");
     }
   };

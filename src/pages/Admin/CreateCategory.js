@@ -21,7 +21,7 @@ const CreateCategory = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        `${process.env.REACT_APP_API}/api/v1/category/create-category`,
+        `/api/v1/category/create-category`,
         { name }
       );
       if (data?.success) {
@@ -31,7 +31,7 @@ const CreateCategory = () => {
         toast.error(data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Something went wrong in input form");
     }
   };
@@ -40,13 +40,13 @@ const CreateCategory = () => {
   const getAllCategories = async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_API}/api/v1/category/get-category`
+        `/api/v1/category/get-category`
       );
       if (data?.success) {
         setCategories(data?.category);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Something went wrong in getting all the Categories");
     }
   };
@@ -59,7 +59,7 @@ const CreateCategory = () => {
     e.preventDefault();
     try {
       const updateCategory = await axios.put(
-        `${process.env.REACT_APP_API}/api/v1/category/update-category/${selected._id}`,
+        `/api/v1/category/update-category/${selected._id}`,
         { name: updatedName }
       );
       if (updateCategory.data.success) {
@@ -72,7 +72,7 @@ const CreateCategory = () => {
         toast.error(updateCategory.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Something went wrong while updating the category");
     }
   };
@@ -81,7 +81,7 @@ const CreateCategory = () => {
   const handleDelete = async (cId) => {
     try {
       const { data } = await axios.delete(
-        `${process.env.REACT_APP_API}/api/v1/category/delete-category/${cId}`,
+        `/api/v1/category/delete-category/${cId}`,
         { name: updatedName }
       );
       if (data.success) {
@@ -94,7 +94,7 @@ const CreateCategory = () => {
         toast.error(data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Something went wrong while deleting the category");
     }
   };

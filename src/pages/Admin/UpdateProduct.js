@@ -26,13 +26,13 @@ const UpdateProduct = () => {
   const getAllCategories = async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_API}/api/v1/category/get-category`
+        `/api/v1/category/get-category`
       );
       if (data?.success) {
         setCategories(data?.category); 
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Something went wrong in getting the catgories");
     }
   };
@@ -41,7 +41,7 @@ const UpdateProduct = () => {
   const getSingleProduct = async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_API}/api/v1/product/get-product/${params.slug}`
+        `/api/v1/product/get-product/${params.slug}`
       );
       setName(data?.product?.name);
       setDescription(data?.product?.description);
@@ -51,7 +51,7 @@ const UpdateProduct = () => {
       setShipping(data?.product?.shipping);
       setId(data?.product?._id);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -74,7 +74,7 @@ const UpdateProduct = () => {
       photo && productData.append("photo", photo);
       productData.append("shipping", shipping);
       const { data } = await axios.put(
-        `${process.env.REACT_APP_API}/api/v1/product/update-product/${id}`,
+        `/api/v1/product/update-product/${id}`,
         productData
       );
       if (data?.success) {
@@ -84,7 +84,7 @@ const UpdateProduct = () => {
         toast.error(data?.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Error in updating the product");
     }
   };
@@ -141,7 +141,7 @@ const UpdateProduct = () => {
                 ) : (
                   <div className="text-center">
                     <img
-                      src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${id}`}
+                      src={`/api/v1/product/product-photo/${id}`}
                       alt={photo?.name}
                       height={"200px"}
                       className="img img-responsive"

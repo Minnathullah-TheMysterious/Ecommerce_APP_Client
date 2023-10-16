@@ -17,7 +17,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        `${process.env.REACT_APP_API}/api/v1/auth/login`,
+        `/api/v1/auth/login`,
         { email, password }
       );
   

@@ -26,7 +26,7 @@ const CartPage = () => {
         currency: "USD",
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -39,7 +39,7 @@ const CartPage = () => {
       setCart(myCart);
       localStorage.setItem("cart", JSON.stringify(myCart));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -47,11 +47,11 @@ const CartPage = () => {
   const getBraintreeToken = async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_API}/api/v1/product/braintree/token`
+        `/api/v1/product/braintree/token`
       );
       setClientToken(data?.clientToken);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
   useEffect(() => {
@@ -64,7 +64,7 @@ const CartPage = () => {
       setLoading(true);
       const { nonce } = await instance.requestPaymentMethod();
       await axios.post(
-        `${process.env.REACT_APP_API}/api/v1/product/braintree/payment`,
+        `/api/v1/product/braintree/payment`,
         { nonce, cart }
       );
       setLoading(false);
@@ -73,7 +73,7 @@ const CartPage = () => {
       navigate("/dashboard/user/orders");
       toast.success("Payment Completed Successfully");
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setLoading(false);
     }
   };
@@ -102,7 +102,7 @@ const CartPage = () => {
               <div className="row card flex-row mb-2" key={p._id}>
                 <div className="col-md-5">
                   <img
-                    src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p._id}`}
+                    src={`/api/v1/product/product-photo/${p._id}`}
                     className="card-img-top img img-responsive"
                     alt="Product"
                     height={"200px"}

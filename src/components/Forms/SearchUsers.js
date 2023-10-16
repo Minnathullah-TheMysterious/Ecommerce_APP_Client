@@ -12,12 +12,12 @@ const SearchUsers = () => {
     e.preventDefault();
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_API}/api/v1/auth/search-user/${value.keyword}`
+        `/api/v1/auth/search-user/${value.keyword}`
       );
       setValue({ ...value, results: data });
       navigate("/dashboard/admin/search-user");
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
