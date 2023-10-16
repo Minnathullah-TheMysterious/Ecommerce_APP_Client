@@ -9,7 +9,7 @@ const AuthProvider = ({ children }) => {
     token: "",
   });
 
-  //defalut axios
+  //default axios
   axios.defaults.headers.common["Authorization"] = auth?.token;
 
   useEffect(() => {
